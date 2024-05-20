@@ -9,7 +9,7 @@ import pyro.distributions as dist
 from pyro.infer import SVI, Trace_ELBO, TraceEnum_ELBO, config_enumerate
 from pyro.optim import Adam
 
-from utils import MLP, Exp, DatasetFromArray, GLASBEY_30_COLORS
+from multitme.utils import MLP, Exp, DatasetFromArray, GLASBEY_30_COLORS
 import os
 from tqdm.notebook import tqdm
 import logging
@@ -265,7 +265,7 @@ class SSVAE(nn.Module):
         
         return train_sup_loader, train_unsup_loader, test_sup_loader
 
-    def plot_IMConST(self, seed=0):
+    def plot_IMConST(self, seed=0, legend=False):
         torch.manual_seed(seed)
         pred_celltype = self.predict()
         from PIL import Image
@@ -279,7 +279,8 @@ class SSVAE(nn.Module):
             ax.scatter(all_imc_cells[ct_idx, 0], all_imc_cells[ct_idx, 1], c=GLASBEY_30_COLORS[i], s=5, edgecolors='none',
                       label=self.ST_celltypes[i])
         ax.set_axis_off()
-        plt.legend()
+        if legend:
+            plt.legend()
         if not os.path.exists(os.path.join(self.data_path, 'plots')):
                 os.makedirs(os.path.join(self.data_path, 'plots'))
         plt.savefig(os.path.join(self.data_path, 'plots/IMC_on_ST.pdf'), bbox_inches='tight')

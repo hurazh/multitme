@@ -7,7 +7,7 @@ from scipy.spatial import cKDTree
 from PIL import Image
 import json
 import os
-import utils
+import multitme.utils as utils
 import logging
 
 logging.basicConfig(level=logging.INFO, format='%(message)s')
